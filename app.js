@@ -51,8 +51,8 @@ const express = require('express'),
     mongoose.set('useFindAndModify', false);
     //mongoose.connect(uri, { useFindAndModify: false });
     let conn = mongoose.connection;
-     conn.openUri('mongodb://bigboblittle:pAssw0rd@ds149676.mlab.com:49676/gideon-project',{ useNewUrlParser: true });
-  //  conn.openUri('mongodb://localhost/gideon-project',{ useNewUrlParser: true });
+     conn.openUri('ADD-YOUR-CONNECTION STRING HERE',{ useNewUrlParser: true });
+  
    
     conn.on('connected', () => {
         console.log('mongoose connected');
