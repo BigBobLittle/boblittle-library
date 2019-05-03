@@ -1,3 +1,0 @@
-   conn.openUri('mongodb://bigboblittle:pAssw0rd@ds149676.mlab.com:49676/gideon-project',{ useNewUrlParser: true });
-  //  conn.openUri('mongodb://localhost/gideon-project',{ useNewUrlParser: true });
-   
