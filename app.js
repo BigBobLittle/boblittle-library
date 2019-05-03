@@ -1,3 +1,5 @@
+/***PROJECT DEPENDENCIES */
+
 const express = require('express'),
         flash = require('express-flash'),
         session = require('express-session'),
@@ -15,6 +17,7 @@ const express = require('express'),
       app.use(flash());
 
 
+      /***MIDDLEWARES */
       app.use(methodOverride('_method'));
       app.use((req,res,next) => {
           res.locals.message =  null;
@@ -30,6 +33,8 @@ const express = require('express'),
               next();
           }
       }
+
+
       /*** TEMPLATE ENGINE SETUP */
      app.use(express.static(path.join(__dirname, 'public')));
      app.set('views', path.join(__dirname, 'view'));
@@ -38,10 +43,10 @@ const express = require('express'),
     
 
      /***SERVE THE APP */
-      app.listen(process.env.PORT || 3000);
+      app.listen(process.env.PORT || 7000);
 
 
-    //connect to mongoose by passing in ur connection string
+    /*** CONNECT TO MONGODB */
     mongoose.Promise = global.Promise;
     mongoose.set('useFindAndModify', false);
     //mongoose.connect(uri, { useFindAndModify: false });
@@ -56,7 +61,10 @@ const express = require('express'),
 
 
 
-      /**** ROUTES */
+      /**** ALL ROUTES */
+
+
+      //SERVE HOMPAGE
       app.get('/', (req,res,next)=> {
 
         movies = [];
@@ -81,29 +89,32 @@ const express = require('express'),
           res.render('login');
       });
 
+  
+      /*** LOGOUT */
+
       app.get('/logout', (req,res,next) => {
           req.session.destroy();
           res.redirect('/');
       });
 
+
+      /**** SEARCH FOR A BOOK USING TITLE OR GENRE */
       app.post('/search', (req,res,next)=> {
 
         search = req.body.what;
 
-          console.log(search);
-          res.json(search);
-          
-        //   Book.find({ $or : [{title:search}, {genre:search}]})
-        //         .exec((err, match)=> {
-        //             if(err) return next(err);
+          Book.find({ $or : [{title:search}, {genre:search}]})
+                .exec((err, match)=> {
+                    if(err) return next(err);
 
-        //             res.redirect('/search', {book:{title:match.title, genre:match.genre, author:match.author}})
-        //            // res.json({book:{title:match.title, genre:match.genre}});
-        //         });
-      });
+                    res.render('search', {book:match} );
+                   
+                });
+    });
 
 
 
+    /***** RENDER DASHBOARD, RESTRICT ROUTE TO LOGIN USERS */
       app.get('/dashboard', checkSignIn, (req,res,next) => {
 
         movies = [];
@@ -115,13 +126,13 @@ const express = require('express'),
                 res.send(`No items in library`);
             }
 
-        
-       
           res.render('dashboard', {movies:movies, message: req.flash('info', 'Welcome')});
       });
 
     });
-      /*** CREATE A BOOK */
+
+
+      /*** CREATE/ADD  A BOOK TO LIBRARY--- ONLY FOR LOGIN USERS */
       app.post('/bob/createBook', checkSignIn, (req,res,next) => {
           let frm = req.body;
           title = frm.title;
@@ -130,21 +141,19 @@ const express = require('express'),
 
           if(!title){
               req.flash('error', 'Title is required');
-             // res.send('Title is required');
-
           }
 
           if(!author){
-              res.send('Please provide author name');
+             // res.send('Please provide author name');
+             req.flash('error', 'Please provide author name');
           }
 
           if(!genre){
-              res.send('Genre is required');
+              //res.send('Genre is required');
+              req.flash('error', 'Genre is required');
           }
 
-         console.log(req.body)
-
-         req.flash('info', 'Title is required');
+   
           let aBook = new Book({
               title:title,
               author:author,
@@ -163,7 +172,7 @@ const express = require('express'),
       });
 
 
-      /*** EDIT A BOOK */
+      /*** EDIT A BOOK, ONLY WHEN A USER LOGS IN */
       app.put('/edit/:id',  checkSignIn, (req,res,next) => {
           console.log(req.body);
             Book.findOneAndUpdate({_id:req.params.id}, req.body)
@@ -175,23 +184,17 @@ const express = require('express'),
                     });
       });
 
-        /**** DELETE A BOOK */
-        app.delete('/bob', checkSignIn, (req,res,next) => {
+        /**** DELETE A BOOK, FOR LOG IN USERS */
+        app.delete('/bob/:id', checkSignIn, (req,res,next) => {
 
-            id = req.body.id;
-           console.log(id);
-           res.json(id);
+ 
+              Book.findOneAndRemove({_id:req.params.id})
+                    .exec((err, deletedBook)=> {
+                        if(err) return next(err);
     
-         
-              
-              
-            //   Book.findOneAndRemove({_id:req.body.id})
-            //         .exec((err, deletedBook)=> {
-            //             if(err) return next(err);
-    
-            //            req.flash('info', 'Book deleted');
-            //            res.redirect('/dashboard');
-            //         });
+                       req.flash('info', 'Book deleted');
+                       res.redirect('/dashboard');
+                    });
     
     
           });
@@ -200,9 +203,12 @@ const express = require('express'),
 
 
       
-
+/************** USER AUTHENTICATION ROUTES**************** */
     
       /*** REGISTER */
+      /**
+       * NOTE:: TEST THIS ROUTE WITH POSTMAN:::: I DIDNT CREATE AN INTERFACE ON FRONTEND FOR REGISTRATION
+       */
       app.post('/register', (req,res,next)=> {
         let frm = req.body;
         username = frm.username;
@@ -275,11 +281,13 @@ const express = require('express'),
                        }
    
                        if(passwordMatch){
-                           //stick user to jwt
-                           //const token = jwt.sign({userId:theUserFound.id}, Config.secret,{expiresIn:'24h'});
-                           // token:token, 
+                            
                            req.session.user = theUserFound.username;
                            res.redirect('/dashboard');
+
+                           //stick user to jwt
+                           //const token = jwt.sign({userId:theUserFound.id}, Config.secret,{expiresIn:'24h'});
+                           // token:token,
                           // res.json({success:true, response:`Login successful`,payload:{username:theUserFound.username}});
                        }
                    });
@@ -287,4 +295,4 @@ const express = require('express'),
    
             
         });
-      })
+      });

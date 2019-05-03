@@ -28,7 +28,7 @@
 
                 
                   
-                <!-- movies.forEach(function (book, i) -->
+               
                 <% for (i=0; i < movies.length; i++) {%>
                 <div class="table-row">
                     <div class="serial">#</div>
@@ -88,22 +88,16 @@
                                                 Are you sure you want to delete this book? <br>
                                                 <%= movies[i].title%>
 
-                                                /deleted/<%= movies[i]._id%>
-                                                method="POST" action="/edit/<%= movies[i]._id %>?_method=PUT"
-                                                <form method="POST" action="/bob?_method=DELETE">
+                                               
+                                                <form method="POST" action="/bob/<%= movies[i]._id%>?_method=DELETE">
                                                     <div class="mt-10">
-                                                            <input type="text" name="id" value="<%= movies[i]._id%>" placeholder="Title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Title'" required class="single-input">
+                                                            <input type="hidden" name="id" value="<%= movies[i]._id%>" placeholder="Title"  required class="single-input">
                                                         </div>
-                                                        <button type="button" class="btn btn-primary primary-btn text-uppercase" style="background:red; color:white;">Yes</button>
+                                                        <button type="submit" class=" primary-btn text-uppercase" style="background:red; color:white;">Yes</button>
                                                 </form>
                                             </div>
 
-                                            <!-- <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                    -- <button type="button" class="btn btn-primary primary-btn text-uppercase" 
-                                                        style="background:red; color:white;">Yes</button> 
-                                                   
-                                                  </div> -->
+                                         
                                             
                                         </div>
                                         </div>

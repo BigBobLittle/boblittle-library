@@ -3,18 +3,18 @@
 <!-- start banner Area -->
         <section class="banner-area" id="home">	
 
-            <% if (book) { %>
+                <% for (i = 0; i < book.length; i++ ) {%>
                 <div class="container">
                     <div class="row fullscreen d-flex align-items-center justify-content-start">
                         <div class="banner-content col-lg-7">
                                 <h3 class="mb-30" style="color:white;">Search Result</h3>
                                 
-                            <h5 class="text-white text-uppercase">Author: <%= book.author %></h5>
+                            <h5 class="text-white text-uppercase">Author: <%= book[i].author %></h5>
                             <h1 class="text-uppercase">
-                                New Adventure			  <%= book.title %>	
+                               			  <%= book[i].title %>	
                             </h1>
                             <p class="text-white pt-20 pb-20">
-                                    <%= book.genre %>
+                                  Genre:  <%= book[i].genre %>
                             </p>
                             <a href="#" class="primary-btn text-uppercase">Buy Now for $9.99</a>
                         </div>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-            <% } %>
+       <% } %>
 
             </section>
             <!-- End banner Area -->	
