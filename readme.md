@@ -1,5 +1,8 @@
 ## Live Demo
 [ https://boblittle-library.herokuapp.com]
+Login with: 
+username: `bob` password: `bob` or
+username: `test` password: `test`
 
 # Bob Library
 Build an app that performs CRUD operations on a bookshelf/library.
