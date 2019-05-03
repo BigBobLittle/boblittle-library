@@ -1,0 +1,83 @@
+
+	<%- include('partials/header.html') %>
+
+
+			<!-- start banner Area -->
+			<section class="banner-area" id="home">	
+				<div class="container">
+					<div class="row fullscreen d-flex align-items-center justify-content-start">
+						<div class="banner-content col-lg-7">
+							<h5 class="text-white text-uppercase">Author: Travor James</h5>
+							<h1 class="text-uppercase">
+								New Adventure				
+							</h1>
+							<p class="text-white pt-20 pb-20">
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temp <br> or incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
+							</p>
+							<a href="#" class="primary-btn text-uppercase">Buy Now for $9.99</a>
+						</div>
+						<div class="col-lg-5 banner-right">
+							<img class="img-fluid" src="img/header-img.png" alt="">
+						</div>												
+					</div>
+				</div>
+			</section>
+			<!-- End banner Area -->	
+
+
+	<!-- Start course Area -->
+	<section class="course-area section-gap" id="course">
+		<div class="container">
+			<div class="row d-flex justify-content-center">
+				<div class="menu-content pb-60 col-lg-9">
+					<div class="title text-center">
+						<h1 class="mb-10">Top Courses That are open for Students</h1>
+						<p>Who are in extremely love with eco friendly system.</p>
+					</div>
+				</div>
+			</div>			
+			
+			
+			<div class="row">
+					
+				<div class="active-course-carusel">
+						<% for (i=0; i < movies.length; i++)  {%>
+					
+					<div class="single-course item ">
+						<img class="img-fluid" src="img/c1.jpg" alt="">
+						<p class="sale-btn">For Sale</p>
+						<div class="details">
+							<a href="#"><h4><%= movies[i].author %> <span class="price float-right"><%= movies[i].genre %></span></h4></a>	
+							<p>
+									<%= movies[i].title %>
+							</p>
+						</div>
+					</div>
+
+					<% } %>	
+
+
+											
+				</div>	
+												
+			</div>
+				
+		</div>	
+	</section>
+	<!-- End course Area -->
+			
+			
+
+	<%- include('partials/content.html') %>
+
+
+
+
+
+			
+			<!-- start footer Area -->		
+			<%- include('partials/footer.html') %>
+    
+    
+    
+    

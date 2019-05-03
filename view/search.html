@@ -1,0 +1,37 @@
+<%- include('partials/header.html') %>
+
+<!-- start banner Area -->
+        <section class="banner-area" id="home">	
+
+            <% if (book) { %>
+                <div class="container">
+                    <div class="row fullscreen d-flex align-items-center justify-content-start">
+                        <div class="banner-content col-lg-7">
+                                <h3 class="mb-30" style="color:white;">Search Result</h3>
+                                
+                            <h5 class="text-white text-uppercase">Author: <%= book.author %></h5>
+                            <h1 class="text-uppercase">
+                                New Adventure			  <%= book.title %>	
+                            </h1>
+                            <p class="text-white pt-20 pb-20">
+                                    <%= book.genre %>
+                            </p>
+                            <a href="#" class="primary-btn text-uppercase">Buy Now for $9.99</a>
+                        </div>
+                        <div class="col-lg-5 banner-right">
+                            <img class="img-fluid" src="img/header-img.png" alt="">
+                        </div>												
+                    </div>
+                </div>
+
+            <% } %>
+
+            </section>
+            <!-- End banner Area -->	
+
+
+
+
+
+
+<%- include('partials/footer.html') %>
